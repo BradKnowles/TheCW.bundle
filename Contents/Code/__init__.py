@@ -22,6 +22,9 @@ def MainMenu():
 		title = String.CapitalizeWords(show.replace('-', ' '))
 		thumb = item.xpath('.//img/@src')[0]
 
+		if title in ['Whose Line Is It Anyway']:
+			continue
+
 		oc.add(DirectoryObject(
 			key = Callback(Episodes, url=url, title=title),
 			title = title,
