@@ -14,15 +14,22 @@ def Start():
 def MainMenu():
 
 	oc = ObjectContainer()
+	oc.add(DirectoryObject(key = Callback(Shows, title='Current Shows'), title='Current Shows'))
+	oc.add(DirectoryObject(key = Callback(Shows, title='Also On The CW'), title='Also On The CW'))
+	return oc
+####################################################################################################
+@route('/video/thecw/shows')
+def Shows(title):
+
+	oc = ObjectContainer(title2=title)
 	html = HTML.ElementFromURL(CW_SHOWS_LIST)
 
-	for item in html.xpath('//div[@class="shows-current"]//a[@class="hublink"]'):
-		show = item.get('href').split('/')[-1]
-		url = '%s/%s' % (EP_URL, show)
-		title = String.CapitalizeWords(show.replace('-', ' '))
-		thumb = item.xpath('.//img/@src')[0]
+	for item in html.xpath('//ul[@class="showsnav %s"]/li/a' %title.replace(' ', '').lower()):
+		url = CW_ROOT + item.xpath('./@href')[0]
+		title = item.xpath('./p/text()')[0]
+		thumb = item.xpath('.//img/@data-origsrc')[0]
 
-		if title in ['Whose Line Is It Anyway']:
+		if title in ['Whose Line Is It Anyway?']:
 			continue
 
 		oc.add(DirectoryObject(
