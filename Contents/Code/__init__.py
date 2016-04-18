@@ -24,7 +24,8 @@ def Shows(title):
 	oc = ObjectContainer(title2=title)
 	html = HTML.ElementFromURL(CW_SHOWS_LIST)
 
-	for item in html.xpath('//ul[@class="showsnav %s"]/li/a' %title.replace(' ', '').lower()):
+	for item in html.xpath('//ul[@class="showsnav %s"]/li/a' % (title.replace(' ', '').lower())):
+
 		url = CW_ROOT + item.xpath('./@href')[0]
 		title = item.xpath('./p/text()')[0]
 		thumb = item.xpath('.//img/@data-origsrc')[0]
@@ -48,6 +49,7 @@ def Episodes(url, title):
 	html = HTML.ElementFromURL(url)
 
 	for item in html.xpath('//ul[@id="list_1"]/li/div/a[@class="thumbLink"]'):
+
 		url = item.xpath('./@href')[0]
 		if not url.startswith('http://'):
 			url = '%s%s' % (CW_ROOT, url)
@@ -64,8 +66,10 @@ def Episodes(url, title):
 				season = season_and_episode[0] + season_and_episode[1]
 			else:
 				season = season_and_episode[0]
+
 			try: season = int(season)
 			except: season = None
+
 			try: ep_index = int(season_and_episode)
 			except: ep_index = None
 		except:
