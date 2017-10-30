@@ -16,7 +16,9 @@ def MainMenu():
 	oc = ObjectContainer()
 	oc.add(DirectoryObject(key = Callback(Shows, title='Current Shows'), title='Current Shows'))
 	oc.add(DirectoryObject(key = Callback(Shows, title='Also On The CW'), title='Also On The CW'))
+
 	return oc
+
 ####################################################################################################
 @route('/video/thecw/shows')
 def Shows(title):
