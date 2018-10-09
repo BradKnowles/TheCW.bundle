@@ -38,7 +38,7 @@ def Shows(title):
 		oc.add(DirectoryObject(
 			key = Callback(Episodes, url=url, title=title),
 			title = title,
-			thumb = Resource.ContentsOfURLWithFallback(thumb)
+			thumb = thumb
 		))
 
 	return oc
@@ -53,13 +53,10 @@ def Episodes(url, title):
 	for item in html.xpath('//ul[@id="list_1"]/li/div/a[@class="thumbLink"]'):
 
 		url = item.xpath('./@href')[0]
-		if not url.startswith('http://'):
+		if not url.startswith('http://') or not url.startswith('https://'):
 			url = '%s%s' % (CW_ROOT, url)
 
 		thumb = item.xpath('.//img/@src')[0]
-		if not thumb.startswith('http://'):
-			thumb = '%s%s' % (CW_ROOT, thumb)
-
 		episode_title = item.xpath('.//div[@class="videodetails1"]/p/text()')[0]
 
 		try:
@@ -92,13 +89,13 @@ def Episodes(url, title):
 				index = ep_index,
 				season = season,
 				originally_available_at = date,
-				thumb = Resource.ContentsOfURLWithFallback(thumb)
+				thumb = thumb
 			))
 		else:
 			oc.add(VideoClipObject(
 				url = url,
 				title = episode_title,
-				thumb = Resource.ContentsOfURLWithFallback(thumb)
+				thumb = thumb
 			))
 
 	return oc
