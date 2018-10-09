@@ -26,14 +26,15 @@ def Shows(title):
 	oc = ObjectContainer(title2=title)
 	html = HTML.ElementFromURL(CW_SHOWS_LIST)
 
-	for item in html.xpath('//ul[@class="showsnav %s"]/li/a' % (title.replace(' ', '').lower())):
+	for item in html.xpath('//ul[@class="showsnav {}"]/li/a'.format(title.replace(' ', '').lower())):
 
-		url = CW_ROOT + item.xpath('./@href')[0]
 		title = item.xpath('./p/text()')[0]
-		thumb = item.xpath('.//img/@data-origsrc')[0]
 
 		if title in ['Whose Line Is It Anyway?']:
 			continue
+
+		url = CW_ROOT + item.xpath('./@href')[0]
+		thumb = 'http://{}'.format(item.xpath('.//img/@data-origsrc')[0].split('//')[-1])
 
 		oc.add(DirectoryObject(
 			key = Callback(Episodes, url=url, title=title),
@@ -54,7 +55,7 @@ def Episodes(url, title):
 
 		url = item.xpath('./@href')[0]
 		if not url.startswith('http://') or not url.startswith('https://'):
-			url = '%s%s' % (CW_ROOT, url)
+			url = '{}{}'.format(CW_ROOT, url)
 
 		thumb = item.xpath('.//img/@src')[0]
 		episode_title = item.xpath('.//div[@class="videodetails1"]/p/text()')[0]
